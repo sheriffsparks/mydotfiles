@@ -151,11 +151,18 @@ function install_vim_plugin {
 		print_info "$repo already installed"
 	fi
 }
+function vim_plugins {
+	while read plugin
+	do
+		install_vim_plugin "$plugin"
+	done < $VIMPLUGINS
+}
 
 #-----------------------
 #  SETUP
 #-----------------------
 PWD=`pwd`
+VIMPLUGINS=vimplugins
 internet_check
 if [[ $? -eq 0 ]]
 then
@@ -189,13 +196,18 @@ else
 	print_info "VIM Pathogen already installed"
 fi
 
-install_vim_plugin "git://github.com/tmux-plugins/vim-tmux-focus-events.git"
-install_vim_plugin "https://github.com/terryma/vim-smooth-scroll.git"
-install_vim_plugin "https://github.com/airblade/vim-gitgutter.git"
-install_vim_plugin "https://github.com/easymotion/vim-easymotion.git"
-install_vim_plugin "https://github.com/christoomey/vim-tmux-navigator.git"
-install_vim_plugin "https://github.com/tpope/vim-fugitive.git"
+if [[ ! -f $PWD/vimplugins ]]
+then
+	print_warn "No vimplugins file found"
+else
+	vim_plugins
+fi
 
+#-----------------------
+#  VIM COLORS
+#-----------------------
+mkdir -p ~/.vim/colors
+place_config peaksea.vim ~/.vim/colors/peaksea.vim
 
 #-----------------------
 #  TMUX PLUGIN MANAGER

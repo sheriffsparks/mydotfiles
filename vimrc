@@ -86,3 +86,17 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 2)<CR>
 
 " GitGutter settings
 set updatetime=100
+
+" ALE settings
+let g:ale_open_list = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+
+" lightline settings
+if !has('gui_running')
+  set t_Co=256
+endif
+
+" Decent dark color scheme
+set background=dark
+colors desert

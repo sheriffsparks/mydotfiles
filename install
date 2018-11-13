@@ -16,6 +16,7 @@ function check_git {
 		then
 			git pull
 			check_return "git pull"
+			print_error "Quiting so you can rerun with new version"
 		else
 			print_warn "Continuing with out updating"
 		fi
@@ -164,7 +165,7 @@ then
 	git clone git://github.com/tmux-plugins/vim-tmux-focus-events.git ~/.vim/bundle/vim-tmux-focus-events &>> $logfile
 	check_return "Vim-tmux-focus-events install"
 else
-	print_info "Vim-tmux-focus-events installed"
+	print_info "Vim-tmux-focus-events already installed"
 fi
 
 

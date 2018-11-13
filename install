@@ -139,7 +139,7 @@ check_dir ~/.vim/bundle/vim-tmux-focus-events
 if [[ $? -ne 0 ]]
 then
 	print_info "Installing Vim-tmux-focus-events"
-	git clone git://github.com/tmux-plugins/vim-tmux-focus-events.git ~/.vim/bundle/vim-tmux-focus-events
+	git clone git://github.com/tmux-plugins/vim-tmux-focus-events.git ~/.vim/bundle/vim-tmux-focus-events &>> $logfile
 	check_return "Vim-tmux-focus-events install"
 else
 	print_info "Vim-tmux-focus-events install"

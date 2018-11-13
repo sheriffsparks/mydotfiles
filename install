@@ -158,15 +158,25 @@ then
 else
 	print_info "VIM Pathogen already installed"
 fi
-check_dir ~/.vim/bundle/vim-tmux-focus-events
-if [[ $? -ne 0 ]]
-then
-	print_info "Installing Vim-tmux-focus-events"
-	git clone git://github.com/tmux-plugins/vim-tmux-focus-events.git ~/.vim/bundle/vim-tmux-focus-events &>> $logfile
-	check_return "Vim-tmux-focus-events install"
-else
-	print_info "Vim-tmux-focus-events already installed"
-fi
+
+function install_vim_plugin {
+	repo=`echo $1 | rev | cut -d '/' -f1 | rev | cut -d '.' -f1`
+	check_dir ~/.vim/bundle/$repo
+	if [[ $? -ne 0 ]]
+	then
+		print_info "Installing $repo"
+		git clone $1 ~/.vim/bundle/$repo &>> $logfile
+		check_return "$repo install"
+	else
+		print_info "$repo already installed"
+	fi
+}
+
+install_vim_plugin "git://github.com/tmux-plugins/vim-tmux-focus-events.git"
+install_vim_plugin "https://github.com/terryma/vim-smooth-scroll.git"
+install_vim_plugin "https://github.com/airblade/vim-gitgutter.git"
+install_vim_plugin "https://github.com/easymotion/vim-easymotion.git"
+install_vim_plugin "https://github.com/christoomey/vim-tmux-navigator.git"
 
 
 #-----------------------

@@ -34,22 +34,27 @@ endif
 
 " leader+o to display Open buffers
 noremap <Leader>o :buffers<CR>
-
+" leader+enter to clear highlights
+noremap <Leader><CR> :noh<CR>
+" leader+n to toggle line numbers
+noremap <Leader>n :set nu!<CR>
+" leader+s to toggle spelling
+noremap <Leader>s :set spell!<CR>
+" leader+p to toggle paste
+noremap <Leader>p :set paste!<CR>
+" leader+r to toggle relativenumbering
+noremap <Leader>r :set relativenumber!<CR>
 " searching
 set incsearch " highlight chars as searching
 set hlsearch  " highlight matches
-" leader+enter to clear highlights
-noremap <Leader><CR> :noh<CR>
+
 
 " Better  menu for files
 set wildmenu
-
 " how many lines to keep below current
 set scrolloff=1
-
 " show file location
 set ruler
-
 " reload after file changes
 set autoread
 
@@ -65,8 +70,10 @@ let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
+" Set spelling for some file types
 augroup fileSpell
 	autocmd!
 	autocmd FileType latex,text,md,markdown setlocal spell
 	autocmd BufRead,BufNewFile *.tex,*.txt,*.md setlocal spell
 augroup END
+

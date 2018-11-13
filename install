@@ -14,7 +14,7 @@ function check_git {
 		prompt_yesno "Update?"
 		if [[ $? -eq 0 ]]
 		then
-			git pull
+			git pull &>> $logfile
 			check_return "git pull"
 			print_error "Quiting so you can rerun with new version"
 		else

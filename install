@@ -5,6 +5,17 @@ tee < ${logfile}.pipe $logfile &
 exec &> ${logfile}.pipe
 rm ${logfile}.pipe
 
+function internet_check {
+	wget -q --spider https://github.com
+	if [[ $? -eq 0 ]]
+	then
+		return 0
+	else
+		print_warn "Cannot not reach github. Not checking for new version"
+		return -1
+	fi
+}
+
 function check_git {
 	print_info "Git fetching"
 	git fetch &>> $logfile
@@ -129,8 +140,15 @@ function check_file {
 	fi
 }
 
+#-----------------------
+#  SETUP
+#-----------------------
 PWD=`pwd`
-check_git
+internet_check
+if [[ $? -eq 0 ]]
+then
+	check_git
+fi
 
 #-----------------------
 #  PACKAGE INSTALL

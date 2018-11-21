@@ -17,8 +17,9 @@ set autoindent
 set smarttab
 
 set tabstop=4 	  " number of visual spaces per tab
-set softtabstop=4 noexpandtab " number of spaces in tab when editing
+set softtabstop=4 " number of spaces in tab when editing
 set shiftwidth=4
+set expandtab
 
 " remap leader
 let mapleader="," " remap , to leader

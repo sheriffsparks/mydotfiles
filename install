@@ -1,31 +1,31 @@
 #!/usr/bin/env bash
-logfile=`date +"%H-%M-%S_%d-%m-%Y"`.install.log
-mkfifo ${logfile}.pipe
-tee < ${logfile}.pipe $logfile &
-exec &> ${logfile}.pipe
-rm ${logfile}.pipe
+set -Eeoux pipefail
+logfile=$(date +"%H-%M-%S_%d-%m-%Y").install.log
+mkfifo "${logfile}".pipe
+tee < "${logfile}".pipe "$logfile" &
+exec &> "${logfile}".pipe
+rm "${logfile}".pipe
 
 function internet_check {
-	wget -q --spider https://github.com
-	if [[ $? -eq 0 ]]
+#	if [[ $? -eq 0 ]]
+	if wget -q --spider https://github.com;
 	then
 		return 0
 	else
 		print_warn "Cannot not reach github. Not checking for new version"
-		return -1
+		return 1
 	fi
 }
 
 function check_git {
 	print_info "Git fetching"
-	git fetch &>> $logfile
-	if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]] && ret=`git status | grep -c ahead` && [[ $ret -eq 0 ]]
+	git fetch &>> "$logfile"
+    if [[ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]] && ret=$(git status | grep -c ahead) && [[ $ret -eq 0 ]]
 	then
 		print_warn "Repo not up to date with remote"
-		prompt_yesno "Update?"
-		if [[ $? -eq 0 ]]
+		if prompt_yesno "Update?";
 		then
-			git pull &>> $logfile
+			git pull &>> "$logfile"
 			check_return "git pull"
 			print_error "Quiting so you can rerun with new version"
 		else
@@ -38,29 +38,29 @@ function check_git {
 
 
 function print_error {
-	printf "\033[1;31m[!]\033[0m %s\n" "$1"
+	printf "\\033[1;31m[!]\\033[0m %s\\n" "$1"
 	exit -1
 }
 function print_warn {
-	printf "\033[1;33m[-]\033[0m %s\n" "$1"
+	printf "\\033[1;33m[-]\\033[0m %s\\n" "$1"
 }
 function print_good {
-	printf "\033[1;32m[+]\033[0m %s\n" "$1"
+	printf "\\033[1;32m[+]\\033[0m %s\\n" "$1"
 }
 function print_info {
-	printf "\033[1;34m[*]\033[0m %s\n" "$1"
+	printf "\\033[1;34m[*]\\033[0m %s\\n" "$1"
 }
 
 function check_installed {
 	installed=$(dpkg-query -W -f'${Status}' "$1" 2>/dev/null | grep "install ok installed")
 	if [[ "" == "$installed" ]]
 	then
-		return -1
+		return 1
 	fi
 	return 0
 }
 function check_return {
-	if [[ $? -ne 0 ]]
+	if [[ $ -ne 0 ]]
 	then
 		print_error "$1 failed"
 	else
@@ -69,17 +69,16 @@ function check_return {
 }
 function install_package {
 	pkg=$1
-	check_installed $pkg
-	if [[ $? -ne 0 ]]
+	if check_installed "$pkg";
 	then
 		print_info "$pkg not installed. Installing..." 
-		sudo apt -y install $pkg &>> $logfile
+		sudo apt -y install "$pkg" &>> "$logfile"
 		check_return "$pkg install"
 	fi
 	print_good "$pkg installed"
 }
 function prompt_yesno {
-	while read -p "$1 [y/n]: " result && [[ $result != 'y' ]] && [[ $result != 'n' ]]
+	while read -rp "$1 [y/n]: " result && [[ $result != 'y' ]] && [[ $result != 'n' ]]
 	do
 		print_warn "Input not understood"
 	done
@@ -94,17 +93,16 @@ function prompt_yesno {
 function check_config {
 	if [[ ! -f "$2" ]]
 	then
-		return -1
+		return 1
 	else
 		wanted_path=$PWD/"$1"
-		real_path=`realpath $2`
+        real_path=$(realpath "$2")
 		if [[ "$wanted_path" != "$real_path" ]]
 		then
 			print_warn "$2 exists but does not match $1"
-			prompt_yesno "Replace?"
-			if [[ $? -eq 0 ]]
+			if prompt_yesno "Replace?"
 			then
-				return -1
+				return 1
 			else
 				print_error "Exiting!"
 			fi
@@ -114,19 +112,18 @@ function check_config {
 }
 
 function place_config {
-	check_config "$1" "$2"
-	if [[ $? -eq 0 ]]
+	if check_config "$1" "$2";
 	then
 		print_info "$2 already linked"
 	else
-		ln -sf $PWD/"$1" "$2" &>> $logfile
+		ln -sf "$PWD"/"$1" "$2" &>> "$logfile"
 		check_return "Placing $1"
 	fi
 }
 function check_dir {
 	if [[ ! -d $1 ]]
 	then
-		return -1
+		return 1
 	else
 		return 0
 	fi
@@ -134,37 +131,35 @@ function check_dir {
 function check_file {
 	if [[ ! -f $1 ]]
 	then
-		return -1
+		return 1
 	else
 		return 0
 	fi
 }
 function install_vim_plugin {
-	repo=`echo $1 | rev | cut -d '/' -f1 | rev | cut -d '.' -f1`
-	check_dir ~/.vim/bundle/$repo
-	if [[ $? -ne 0 ]]
+    repo=$(echo "$1" | rev | cut -d '/' -f1 | rev | cut -d '.' -f1)
+	if check_dir ~/.vim/bundle/"$repo";
 	then
 		print_info "Installing $repo"
-		git clone $1 ~/.vim/bundle/$repo &>> $logfile
+		git clone "$1" ~/.vim/bundle/"$repo" &>> "$logfile"
 		check_return "$repo install"
 	else
 		print_info "$repo already installed"
 	fi
 }
 function vim_plugins {
-	while read plugin
+	while read -r plugin
 	do
 		install_vim_plugin "$plugin"
-	done < $VIMPLUGINS
+	done < "$VIMPLUGINS"
 }
 
 #-----------------------
 #  SETUP
 #-----------------------
-PWD=`pwd`
+PWD=$(pwd)
 VIMPLUGINS=vimplugins
-internet_check
-if [[ $? -eq 0 ]]
+if internet_check;
 then
 	check_git
 fi
@@ -186,11 +181,10 @@ place_config gdbinit ~/.gdbinit
 #-----------------------
 #  VIM PLUGINS
 #-----------------------
-check_file ~/.vim/autoload/pathogen.vim
-if [[ $? -ne 0 ]]
+if check_file ~/.vim/autoload/pathogen.vim;
 then
 	print_info "Installing Vim Pathogen"
-	mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &>> $logfile
+	mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &>> "$logfile"
 	check_return "Vim Pathogen install"
 else
 	print_info "VIM Pathogen already installed"
@@ -212,11 +206,10 @@ place_config peaksea.vim ~/.vim/colors/peaksea.vim
 #-----------------------
 #  TMUX PLUGIN MANAGER
 #-----------------------
-check_dir ~/.tmux/plugins/tpm
-if [[ $? -ne 0 ]]
+if check_dir ~/.tmux/plugins/tpm;
 then
 	print_info "Intalling TPM"
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm &>> $logfile
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm &>> "$logfile"
 else
 	print_info "TPM already installed"
 fi

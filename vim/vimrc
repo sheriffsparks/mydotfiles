@@ -15,14 +15,11 @@ set laststatus=2
 "tabs
 set autoindent
 set smarttab
-
 set tabstop=4 	  " number of visual spaces per tab
 set softtabstop=4 " number of spaces in tab when editing
 set shiftwidth=4
 set expandtab
 
-" remap leader
-let mapleader="," " remap , to leader
 
 " allows cursor change in tmux mode
 if exists('$TMUX')
@@ -33,6 +30,8 @@ else
 	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+" remap leader
+let mapleader="," " remap , to leader
 " leader+o to display Open buffers
 noremap <Leader>o :buffers<CR>
 " leader+enter to clear highlights
@@ -45,6 +44,7 @@ noremap <Leader>s :set spell!<CR>
 noremap <Leader>p :set paste!<CR>
 " leader+r to toggle relativenumbering
 noremap <Leader>r :set relativenumber!<CR>
+
 " searching
 set incsearch " highlight chars as searching
 set hlsearch  " highlight matches
@@ -53,7 +53,7 @@ set hlsearch  " highlight matches
 " Better  menu for files
 set wildmenu
 " how many lines to keep below current
-set scrolloff=1
+set scrolloff=5
 " show file location
 set ruler
 " reload after file changes
@@ -78,6 +78,14 @@ augroup fileSpell
 	autocmd BufRead,BufNewFile *.tex,*.txt,*.md setlocal spell
 augroup END
 
+" Decent dark color scheme
+set background=dark
+colors desert
+
+""""""""""""""""""""""""""""""""""
+" PLUGIN SETTINGS 
+""""""""""""""""""""""""""""""""""
+
 " Smooth scroll settings
 "distance, duration, speed
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 1)<CR>
@@ -89,15 +97,11 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 2)<CR>
 set updatetime=100
 
 " ALE settings
-let g:ale_open_list = 1
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
+"let g:ale_open_list = 1
+"let g:ale_lint_on_save = 1
+"let g:ale_lint_on_text_changed = 0
 
 " lightline settings
 if !has('gui_running')
   set t_Co=256
 endif
-
-" Decent dark color scheme
-set background=dark
-colors desert

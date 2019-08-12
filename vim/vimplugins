@@ -1,9 +1,12 @@
 git://github.com/tmux-plugins/vim-tmux-focus-events.git
-https://github.com/tpope/vim-sensible.git
-https://github.com/terryma/vim-smooth-scroll.git
 https://github.com/airblade/vim-gitgutter.git
-https://github.com/easymotion/vim-easymotion.git
 https://github.com/christoomey/vim-tmux-navigator.git
-https://github.com/tpope/vim-fugitive.git
 https://github.com/itchyny/lightline.vim.git
+https://github.com/terryma/vim-smooth-scroll.git
 https://github.com/tpope/vim-commentary.git
+https://github.com/tpope/vim-fugitive.git
+https://github.com/tpope/vim-sensible.git
+https://github.com/dense-analysis/ale.git
+https://github.com/morhetz/gruvbox.git
+https://github.com/shinchu/lightline-gruvbox.vim.git
+https://github.com/Vimjas/vim-python-pep8-indent.git

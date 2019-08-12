@@ -1,4 +1,6 @@
+set nocompatible
 execute pathogen#infect()
+execute pathogen#helptags()
 
 syntax enable
 filetype plugin indent on
@@ -20,6 +22,13 @@ set softtabstop=4 " number of spaces in tab when editing
 set shiftwidth=4
 set expandtab
 
+set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" Decent dark color scheme
+colorscheme gruvbox
+set background=dark
 
 " allows cursor change in tmux mode
 if exists('$TMUX')
@@ -28,6 +37,17 @@ if exists('$TMUX')
 else
 	let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 	let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" Term window commands. This fixes vim-tmux-navigator in side of
+" terminal windows. It is listed as issue on page so maybe it will
+" get incoperated into master at some point
+if exists(':tnoremap')
+ tnoremap <silent> <c-h> <c-w>:TmuxNavigateLeft<cr>
+ tnoremap <silent> <c-j> <c-w>:TmuxNavigateDown<cr>
+ tnoremap <silent> <c-k> <c-w>:TmuxNavigateUp<cr>
+ tnoremap <silent> <c-l> <c-w>:TmuxNavigateRight<cr>
+ tnoremap <silent> <c-\> <c-w>:TmuxNavigatePrevious<cr>
 endif
 
 " remap leader
@@ -44,11 +64,14 @@ noremap <Leader>s :set spell!<CR>
 noremap <Leader>p :set paste!<CR>
 " leader+r to toggle relativenumbering
 noremap <Leader>r :set relativenumber!<CR>
+" leader+t to toggle ALE
+noremap <Leader>t :ALEToggle<CR>
+" leader+f to open netrw
+noremap <Leader>f :20Vexplore<CR>
 
 " searching
 set incsearch " highlight chars as searching
 set hlsearch  " highlight matches
-
 
 " Better  menu for files
 set wildmenu
@@ -58,6 +81,12 @@ set scrolloff=5
 set ruler
 " reload after file changes
 set autoread
+
+packloadall
+silent! helptags ALL
+
+"generate ctags
+command Tags !ctags -R .
 
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
@@ -78,9 +107,11 @@ augroup fileSpell
 	autocmd BufRead,BufNewFile *.tex,*.txt,*.md setlocal spell
 augroup END
 
-" Decent dark color scheme
-set background=dark
-colors desert
+" Python file settings
+autocmd FileType python noremap <buffer> <Leader>b obreakpoint()<Esc>
+autocmd FileType python noremap <buffer> <Leader>d :bel terminal ++rows=8 ++cols=0 ++close bpython<CR>
+autocmd FileType python noremap <buffer> <Leader>D :vert terminal ++close bpython<CR>
+
 
 """"""""""""""""""""""""""""""""""
 " PLUGIN SETTINGS 
@@ -97,11 +128,27 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 2)<CR>
 set updatetime=100
 
 " ALE settings
-"let g:ale_open_list = 1
-"let g:ale_lint_on_save = 1
-"let g:ale_lint_on_text_changed = 0
+let g:ale_open_list = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_enter = 1
+let g:ale_python_pylint_executable = 'pylint3'
+"let g:ale_python_flake8_executable = '/usr/bin/python3'
+"let g:ale_python_flake8_options = "-m flake8"
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
 
 " lightline settings
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
 if !has('gui_running')
   set t_Co=256
 endif

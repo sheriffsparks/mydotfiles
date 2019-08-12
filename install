@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-exec {FD}>$(date +"%H-%M-%S_%d-%m-%Y").install.trace
+loggy=$(date +"%H-%M-%S_%d-%m-%Y").log
+exec > >(tee -ia ${loggy})
+exec 2> >(tee -ia ${loggy} >& 2)
+exec {FD}> ${loggy}
 export BASH_XTRACEFD=${FD}
 set -Eeoux pipefail
 

@@ -228,6 +228,7 @@ fi
 #  SSH 
 #-----------------------
 place_config ssh/config ~/.ssh/config
+mkdir ~/.ssh/controlmasters
 
 printf "\n\\033[5m"
 print_info "Remember to install tmux plugins with prefix+I if new ones installed"

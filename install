@@ -182,6 +182,7 @@ fi
 #-----------------------
 #  PACKAGE INSTALL
 #-----------------------
+install_package curl
 install_package vim
 install_package tmux
 install_package gdb

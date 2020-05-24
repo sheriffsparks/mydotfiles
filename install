@@ -184,7 +184,6 @@ fi
 #-----------------------
 #  PACKAGE INSTALL
 #-----------------------
-install_package curl
 install_package vim
 install_package tmux
 install_package gdb
@@ -225,6 +224,7 @@ fi
 #-----------------------
 #  SSH 
 #-----------------------
+mkdir -p ~/.ssh
 place_config ssh/config ~/.ssh/config
 mkdir ~/.ssh/controlmasters
 
@@ -233,8 +233,14 @@ mkdir ~/.ssh/controlmasters
 #-----------------------
 if prompt_yesno "Install pwndbg?"
 then
+    mkdir -p ~/tools
+    mkdir -p ~/.local/bin
+    git clone https://github.com/pwndbg/pwndbg.git ~/tools/pwndbg
     place_config gdb/gdbinit_pwndbg ~/.gdbinit_pwndbg
     place_config gdb/gdb-pwndbg ~/.local/bin/gdb-pwndbg
+    pushd ~/tools/pwndbg
+    ./setup.sh
+    popd
 fi
 
 printf "\n\\033[5m"

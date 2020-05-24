@@ -184,6 +184,7 @@ fi
 #-----------------------
 #  PACKAGE INSTALL
 #-----------------------
+install_package curl
 install_package vim
 install_package tmux
 install_package gdb
@@ -225,6 +226,7 @@ fi
 #  SSH 
 #-----------------------
 place_config ssh/config ~/.ssh/config
+mkdir ~/.ssh/controlmasters
 
 #-----------------------
 #  gdb-pwndbg 

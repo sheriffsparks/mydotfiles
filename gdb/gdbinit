@@ -1,0 +1,9 @@
+define init-pwndbg
+source ~/.gdbinit_pwndbg
+end
+document init-pwndbg
+Initializes PwnDBG
+end
+
+set disassembly-flavor intel
+

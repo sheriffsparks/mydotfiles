@@ -1,6 +1,4 @@
 set nocompatible
-execute pathogen#infect()
-execute pathogen#helptags()
 
 syntax enable
 filetype plugin indent on
@@ -68,6 +66,14 @@ noremap <Leader>r :set relativenumber!<CR>
 noremap <Leader>t :ALEToggle<CR>
 " leader+f to open netrw
 noremap <Leader>f :20Vexplore<CR>
+" leader+m to make
+noremap <Leader>n :make<CR>
+
+noremap <Leader>w :wa<CR>
+
+"TODO
+" Leader a to run for c program...
+noremap <Leader>a :!./%:r<CR>
 
 " searching
 set incsearch " highlight chars as searching
@@ -133,7 +139,7 @@ let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 1
 let g:ale_python_pylint_executable = 'pylint3'
-let g:ale_linters = {'python': ['pycodestyle', 'flake8', 'pylint', 'mypy', 'pycodestyle', 'pydocstyle', 'pylama']}
+let g:ale_linters = {'python': ['flake8', 'pylint', 'pycodestyle', 'pydocstyle'], 'c':['gcc']}
 "let g:ale_python_flake8_executable = '/usr/bin/python3'
 "let g:ale_python_flake8_options = "-m flake8"
 

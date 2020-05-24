@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 loggy=$(date +"%H-%M-%S_%d-%m-%Y").log
-exec > >(tee -ia ${loggy})
-exec 2> >(tee -ia ${loggy} >& 2)
-exec {FD}> ${loggy}
-export BASH_XTRACEFD=${FD}
+exec > >(tee -ia "${loggy}")
+exec 2> >(tee -ia "${loggy}" >& 2)
+exec {FD}> "${loggy}"
+export BASH_XTRACEFD="${FD}"
 set -Eeoux pipefail
+
+VIM_PLUGIN_DIR=~/.vim/pack/plugin/start
 
 logfile=$(date +"%H-%M-%S_%d-%m-%Y").install.log
 mkfifo "${logfile}".pipe
@@ -152,10 +154,10 @@ function check_file {
 
 function install_vim_plugin {
     repo=$(echo "$1" | rev | cut -d '/' -f1 | rev | cut -d '.' -f1)
-	if check_dir ~/.vim/bundle/"$repo";
+	if check_dir "${VIM_PLUGIN_DIR}/$repo";
 	then
 		print_info "Installing $repo"
-		git clone "$1" ~/.vim/bundle/"$repo" &>> "$logfile"
+		git clone "$1" "${VIM_PLUGIN_DIR}/$repo" &>> "$logfile"
 		check_return "$repo install"
 	else
 		print_info "$repo already installed"
@@ -191,18 +193,14 @@ install_package gdb
 #-----------------------
 place_config vim/vimrc ~/.vimrc
 place_config tmux.conf ~/.tmux.conf
-place_config gdbinit ~/.gdbinit
+place_config gdb/gdbinit ~/.gdbinit
 
 #-----------------------
 #  VIM PLUGINS
 #-----------------------
-if check_file ~/.vim/autoload/pathogen.vim;
+if check_dir "${VIM_PLUGIN_DIR}"
 then
-	print_info "Installing Vim Pathogen"
-	mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &>> "$logfile"
-	check_return "Vim Pathogen install"
-else
-	print_info "VIM Pathogen already installed"
+    mkdir -p "${VIM_PLUGIN_DIR}"
 fi
 
 if [[ ! -f ${VIMPLUGINS} ]]
@@ -227,6 +225,15 @@ fi
 #  SSH 
 #-----------------------
 place_config ssh/config ~/.ssh/config
+
+#-----------------------
+#  gdb-pwndbg 
+#-----------------------
+if prompt_yesno "Install pwndbg?"
+then
+    place_config gdb/gdbinit_pwndbg ~/.gdbinit_pwndbg
+    place_config gdb/gdb-pwndbg ~/.local/bin/gdb-pwndbg
+fi
 
 printf "\n\\033[5m"
 print_info "Remember to install tmux plugins with prefix+I if new ones installed"

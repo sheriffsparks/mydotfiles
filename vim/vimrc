@@ -3,6 +3,7 @@ set nocompatible
 syntax enable
 filetype plugin indent on
 
+set tags+=tags,~/.vim/tags/*
 " Quick exit from edit mode
 imap jj <Esc>
 
@@ -63,12 +64,12 @@ noremap <Leader>p :set paste!<CR>
 " leader+r to toggle relativenumbering
 noremap <Leader>r :set relativenumber!<CR>
 " leader+t to toggle ALE
-noremap <Leader>t :ALEToggle<CR>
+noremap <Leader>a :ALEToggle<CR>
+" leader+t terminal
+noremap <Leader>t :bel terminal ++rows=8 ++cols=0 ++close bash<CR>
 " leader+f to open netrw
-noremap <Leader>f :20Vexplore<CR>
-" leader+m to make
-noremap <Leader>n :make<CR>
-
+noremap <silent> <Leader>f :call ToggleNetrw()<CR>
+noremap <Leader>q :bp\|bd #<CR>
 noremap <Leader>w :wa<CR>
 
 "TODO
@@ -88,7 +89,7 @@ set ruler
 " reload after file changes
 set autoread
 
-packloadall
+" packloadall
 silent! helptags ALL
 
 "generate ctags
@@ -117,6 +118,8 @@ augroup END
 autocmd FileType python noremap <buffer> <Leader>b obreakpoint()<Esc>
 autocmd FileType python noremap <buffer> <Leader>d :bel terminal ++rows=8 ++cols=0 ++close bpython<CR>
 autocmd FileType python noremap <buffer> <Leader>D :vert terminal ++close bpython<CR>
+autocmd FileType python setlocal completeopt-=preview
+let python_highlight_all = 1
 
 
 """"""""""""""""""""""""""""""""""
@@ -159,3 +162,28 @@ let g:lightline.colorscheme = 'gruvbox'
 if !has('gui_running')
   set t_Co=256
 endif
+
+set omnifunc=syntaxcomplete#Complete
+
+let g:NetrwIsOpen=0
+
+au FileType netrw let g:NetrwIsOpen=1
+
+" IDK about this one...
+set noequalalways
+
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while(i >= 1)
+            if(getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent 15Vexplore
+    endif
+endfunction

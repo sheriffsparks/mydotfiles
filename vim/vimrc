@@ -52,7 +52,11 @@ endif
 " remap leader
 let mapleader="," " remap , to leader
 " leader+o to display Open buffers
-noremap <Leader>o :buffers<CR>
+" noremap <Leader>o :buffers<CR>
+" noremap <Leader>o :ls<CR>:b<Space>
+set wildcharm=<C-z>
+nnoremap <leader>o :buffer <C-z><S-Tab>
+
 " leader+enter to clear highlights
 noremap <Leader><CR> :noh<CR>
 " leader+n to toggle line numbers
@@ -64,21 +68,25 @@ noremap <Leader>p :set paste!<CR>
 " leader+r to toggle relativenumbering
 noremap <Leader>r :set relativenumber!<CR>
 " leader+t to toggle ALE
-noremap <Leader>a :ALEToggle<CR>
+" noremap <Leader>a :ALEToggle<CR>
 " leader+t terminal
-noremap <Leader>t :bel terminal ++rows=8 ++cols=0 ++close bash<CR>
+noremap <Leader>t :bel terminal ++rows=8 ++close bash<CR>
+noremap <Leader>m :make<CR>
 " leader+f to open netrw
-noremap <silent> <Leader>f :call ToggleNetrw()<CR>
-noremap <Leader>q :bp\|bd #<CR>
+" noremap <silent> <Leader>f :call ToggleNetrw()<CR>
+noremap <silent> <Leader>f :NERDTreeToggle<CR>
+set path=.,**
+noremap <Leader>s :find *
+noremap <Leader>q :qa<CR>
 noremap <Leader>w :wa<CR>
-
-"TODO
-" Leader a to run for c program...
-noremap <Leader>a :!./%:r<CR>
 
 " searching
 set incsearch " highlight chars as searching
 set hlsearch  " highlight matches
+nnoremap <silent> <c-Up> :resize -1<CR>
+nnoremap <silent> <c-Down> :resize +1<CR>
+nnoremap <silent> <c-right> :vertical resize -1<CR>
+nnoremap <silent> <c-left> :vertical resize +1<CR>
 
 " Better  menu for files
 set wildmenu
@@ -128,10 +136,10 @@ let python_highlight_all = 1
 
 " Smooth scroll settings
 "distance, duration, speed
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 1)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 1)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 5, 2)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 2)<CR>
+" noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 1)<CR>
+" noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 1)<CR>
+" noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 5, 2)<CR>
+" noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 2)<CR>
 
 " GitGutter settings
 set updatetime=100

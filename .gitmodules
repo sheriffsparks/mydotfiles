@@ -1,0 +1,39 @@
+[submodule ".vim/pack/plugin/start/vim-tmux-focus-events"]
+	path = .vim/pack/plugin/start/vim-tmux-focus-events
+	url = https://github.com/tmux-plugins/vim-tmux-focus-events.git
+[submodule ".vim/pack/plugin/start/vim-gitgutter"]
+	path = .vim/pack/plugin/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule ".vim/pack/plugin/start/vim-tmux-navigator"]
+	path = .vim/pack/plugin/start/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule ".vim/pack/plugin/start/lightline.vim"]
+	path = .vim/pack/plugin/start/lightline.vim
+	url = https://github.com/itchyny/lightline.vim.git
+[submodule ".vim/pack/plugin/start/vim-smooth-scroll"]
+	path = .vim/pack/plugin/start/vim-smooth-scroll
+	url = https://github.com/terryma/vim-smooth-scroll.git
+[submodule ".vim/pack/plugin/start/vim-commentary"]
+	path = .vim/pack/plugin/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule ".vim/pack/plugin/start/vim-fugitive"]
+	path = .vim/pack/plugin/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule ".vim/pack/plugin/start/vim-sensible"]
+	path = .vim/pack/plugin/start/vim-sensible
+	url = https://github.com/tpope/vim-sensible.git
+[submodule ".vim/pack/plugin/start/gruvbox"]
+	path = .vim/pack/plugin/start/gruvbox
+	url = https://github.com/morhetz/gruvbox.git
+[submodule ".vim/pack/plugin/start/lightline-gruvbox.vim"]
+	path = .vim/pack/plugin/start/lightline-gruvbox.vim
+	url = https://github.com/shinchu/lightline-gruvbox.vim.git
+[submodule ".vim/pack/plugin/start/vim-python-pep8-indent"]
+	path = .vim/pack/plugin/start/vim-python-pep8-indent
+	url = https://github.com/Vimjas/vim-python-pep8-indent.git
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule ".vim/pack/plugin/opt/lsp"]
+	path = .vim/pack/plugin/opt/lsp
+	url = https://github.com/yegappan/lsp.git

@@ -104,7 +104,7 @@ set autoread
 
 let g:vimspector_enable_mappings = 'HUMAN'
 
-" packloadall
+packloadall
 silent! helptags ALL
 
 "generate ctags

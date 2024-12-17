@@ -34,3 +34,6 @@
 [submodule ".vim/pack/plugin/opt/lsp"]
 	path = .vim/pack/plugin/opt/lsp
 	url = https://github.com/yegappan/lsp.git
+[submodule ".vim/pack/plugin/start/bufexplorer"]
+	path = .vim/pack/plugin/start/bufexplorer
+	url = https://github.com/jlanzarotta/bufexplorer.git

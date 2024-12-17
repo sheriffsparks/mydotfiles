@@ -22,9 +22,6 @@
 [submodule ".vim/pack/plugin/start/vim-sensible"]
 	path = .vim/pack/plugin/start/vim-sensible
 	url = https://github.com/tpope/vim-sensible.git
-[submodule ".vim/pack/plugin/start/gruvbox"]
-	path = .vim/pack/plugin/start/gruvbox
-	url = https://github.com/morhetz/gruvbox.git
 [submodule ".vim/pack/plugin/start/lightline-gruvbox.vim"]
 	path = .vim/pack/plugin/start/lightline-gruvbox.vim
 	url = https://github.com/shinchu/lightline-gruvbox.vim.git

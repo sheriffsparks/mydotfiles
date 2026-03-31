@@ -36,6 +36,7 @@ vim.pack.add({
     "https://github.com/tpope/vim-fugitive",
     "https://github.com/folke/trouble.nvim",
     'https://github.com/alexghergh/nvim-tmux-navigation',
+    'https://github.com/akinsho/bufferline.nvim',
 })
 
 -- =============================================================================
@@ -53,6 +54,8 @@ vim.cmd.colorscheme("gruvbox")
 local opts = { noremap = true, silent = false }
 vim.keymap.set('i', 'jj', "<Esc>", opts)
 vim.keymap.set('n', '\\', '<cmd> Neotree toggle<cr>', opts)
+vim.keymap.set('n', '<TAB>', ':bnext<CR>', opts)
+vim.keymap.set('n', '<S-TAB>', ':bprevious<CR>', opts)
 
 -- =============================================================================
 -- PLUGIN CONFIGURATION
@@ -152,4 +155,8 @@ require('blink.cmp').setup({
         default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
     fuzzy = { implementation = 'prefer_rust_with_warning' },
+})
+
+require("bufferline").setup({
+    options={mode="buffers"}
 })

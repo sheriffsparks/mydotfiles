@@ -37,6 +37,7 @@ vim.pack.add({
     "https://github.com/folke/trouble.nvim",
     'https://github.com/alexghergh/nvim-tmux-navigation',
     'https://github.com/akinsho/bufferline.nvim',
+    "https://github.com/folke/which-key.nvim",
 })
 
 -- =============================================================================
@@ -56,6 +57,7 @@ vim.keymap.set('i', 'jj', "<Esc>", opts)
 vim.keymap.set('n', '\\', '<cmd> Neotree toggle<cr>', opts)
 vim.keymap.set('n', '<TAB>', ':bnext<CR>', opts)
 vim.keymap.set('n', '<S-TAB>', ':bprevious<CR>', opts)
+vim.keymap.set('n', '<leader>n', ':set nu!<CR>', opts)
 
 -- =============================================================================
 -- PLUGIN CONFIGURATION
@@ -119,7 +121,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 })
 
-vim.lsp.enable("basedpyright")
+vim.lsp.config('lua_ls', {
+    settings = {
+        Lua = {
+            diagnostics = { globals = { 'vim' } },
+        },
+    },
+})
+
+local lsps = {
+    "basedpyright",
+    "clangd",
+    "lua_ls"
+}
+
+for _, server in ipairs(lsps) do
+    vim.lsp.enable(server)
+end
+
+-- vim.lsp.enable("basedpyright")
+-- vim.lsp.enable("clangd")
+-- vim.lsp.enable("lua-ls")
 
 require('nvim-treesitter').setup({
     ensure_installed = { 'python', 'lua', 'vimdoc', 'javascript', 'typescript' },
@@ -146,7 +168,7 @@ require('nvim-tmux-navigation').setup({
 })
 
 require('blink.cmp').setup({
-    keymap = { preset = 'default' },
+    keymap = { preset = 'super-tab' },
     appearance = {
         nerd_font_variant = 'mono',
     },
@@ -159,4 +181,7 @@ require('blink.cmp').setup({
 
 require("bufferline").setup({
     options={mode="buffers"}
+})
+require('which-key').setup({
+  delay = 500,  -- default is 200
 })
